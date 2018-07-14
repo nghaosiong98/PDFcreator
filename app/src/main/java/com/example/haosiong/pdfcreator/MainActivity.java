@@ -53,33 +53,47 @@ public class MainActivity extends AppCompatActivity {
         PDFWriter writer = new PDFWriter(PaperSize.A4_WIDTH, PaperSize.A4_HEIGHT);
         writer.setFont(StandardFonts.SUBTYPE, StandardFonts.TIMES_BOLD, StandardFonts.WIN_ANSI_ENCODING);
 
+        int topMargin = 25;
+        int bottomMargin = 25;
+        int leftMargin = 25;
+        int rightMargin = 25;
+
         //Header
-//        writer.addText(1,827,15,"MODEL :");
-//        writer.addText(1,812,15,"N/A");
-//        writer.addText(1,792,15,"CHASSIS NO :");
-//        writer.addText(1,777,15,"N/A");
-//        writer.addText(1,757,15,"SUFFIX :");
-//        writer.addText(1,742,15,"N/A");
-//        writer.addLine(1,726,594,727);
+        drawColumn(writer,2, leftMargin,PaperSize.A4_HEIGHT - topMargin - 60,400,30);
+
+        drawColumn(writer, 2, leftMargin+400, PaperSize.A4_HEIGHT -topMargin - 60, 145, 30);
         //Header END
 
+        //General Information
+        writer.addText(30, PaperSize.A4_HEIGHT - 132, 20, "General Information");
+        writer.addText(385, PaperSize.A4_HEIGHT -132, 20, "Product");
+
+        writer.addLine(25, PaperSize.A4_HEIGHT - 135, PaperSize.A4_WIDTH-rightMargin, PaperSize.A4_HEIGHT - 135);
+
+        drawColumn(writer, 5, leftMargin, PaperSize.A4_HEIGHT -305, 200, 30 );
+        drawColumn(writer, 5, leftMargin + 200, PaperSize.A4_HEIGHT - 305, 145, 30);
+
+
         //Image of car
-//        AssetManager assetManager = getAssets();
+        AssetManager assetManager = getAssets();
 //        Bitmap car = null;
-//        try {
+        String imageName = "";
+
+
+        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/Databases/");
+        File image = new File(dir,imageName);
+        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
 //            car = BitmapFactory.decodeStream(assetManager.open("car.png"));
-//            int left = PaperSize.A4_WIDTH - car.getWidth() - 10;
-//            int bottom = PaperSize.A4_HEIGHT - car.getHeight() - 5;
-//            writer.addImage(left, bottom ,car);
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        int left = PaperSize.A4_WIDTH - 221;
+        int bottom = PaperSize.A4_HEIGHT - 305;
+        writer.addImage(left, bottom ,bitmap);
+
+
         //END of Image
 
         //List of error
-//        writer.addText(1, 710, 15, "List of errors: ");
+        writer.addText(30, PaperSize.A4_HEIGHT - 367, 20 , "List of errors:");
+        writer.addLine(25, PaperSize.A4_HEIGHT - 370, PaperSize.A4_WIDTH - rightMargin, PaperSize.A4_HEIGHT - 370);
 
         //Loop start here to print the errors
 
@@ -96,22 +110,7 @@ public class MainActivity extends AppCompatActivity {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        //Footer
-//        writer.addLine(1,300,594,299);
-//        writer.addText(1, 280, 15, "Inspection done by :");
-//        writer.addText(1, 265,15, "N/A");
-//        writer.addText(1,245,15,"Platform :");
-//        writer.addText(1,230,15, "N/A");
-//        writer.addText(1,210,15, "Time: ");
-//        writer.addText(1,195,15, "N/A");
-//        writer.addText(1,175,15, "Date");
-//        writer.addText(1,160,15, "N/A");
 
-        //END Footer
-
-        drawCell(writer,100,100,200,200);
-        drawColumn(writer,3,0,0,50,25);
-        drawRow(writer,3,0,0,50,25);
         outputToFile("test.pdf",writer.asString(),"ISO-8859-1");
     }
 
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public void drawRow(PDFWriter writer ,int num, int fromLeft, int fromBottom, int width, int height){
         int Left = fromLeft;
 
-        for(int i=0;i<=num;i++){
+        for(int i=0;i<num;i++){
             drawCell(writer, Left, fromBottom, width, height);
             Left += width;
         }
@@ -139,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     public void drawColumn(PDFWriter writer, int num, int fromLeft, int fromBottom, int width, int height){
         int Bottom = fromBottom;
 
-        for(int i=0;i<=num;i++){
+        for(int i=0;i<num;i++){
             drawCell(writer,fromLeft,Bottom,width,height);
             Bottom+=height;
         }
