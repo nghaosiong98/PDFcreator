@@ -114,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
         outputToFile("test.pdf",writer.asString(),"ISO-8859-1");
     }
 
+    /**
+     * This method draws cell
+     * @param writer PDFwriter object
+     * @param fromLeft starting horizontal coordinate X
+     * @param fromBottom starting vertical  coordinate Y
+     * @param width width of the cell
+     * @param height height of the cell
+     */
     public void drawCell(PDFWriter writer, int fromLeft, int fromBottom, int width, int height){
         writer.setFont(StandardFonts.SUBTYPE, StandardFonts.TIMES_BOLD, StandardFonts.WIN_ANSI_ENCODING);
 
@@ -125,6 +133,15 @@ public class MainActivity extends AppCompatActivity {
         writer.addLine(fromLeft + width, fromBottom, fromLeft + width,fromBottom + height); //right
     }
 
+    /**
+     * This method draws a row of cells
+     * @param writer
+     * @param num number of cells
+     * @param fromLeft starting horizontal coordinate X
+     * @param fromBottom starting vertical  coordinate Y
+     * @param width width of the cell
+     * @param height height of the cell
+     */
     public void drawRow(PDFWriter writer ,int num, int fromLeft, int fromBottom, int width, int height){
         int Left = fromLeft;
 
@@ -135,6 +152,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method draws a column of cells
+     * @param writer
+     * @param num number of cells
+     * @param fromLeft starting horizontal coordinate X
+     * @param fromBottom starting vertical  coordinate Y
+     * @param width width of the cell
+     * @param height height of the cell
+     */
     public void drawColumn(PDFWriter writer, int num, int fromLeft, int fromBottom, int width, int height){
         int Bottom = fromBottom;
 
@@ -143,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
             Bottom+=height;
         }
     }
-
-
 
 
     public void outputToFile(String fileName, String pdfContent, String encoding) {
