@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.Instant;
+import java.util.ArrayList;
 
 import crl.android.pdfwriter.PDFWriter;
 import crl.android.pdfwriter.PaperSize;
@@ -76,25 +77,64 @@ public class MainActivity extends AppCompatActivity {
         PDFWriter writer = new PDFWriter(PaperSize.A4_WIDTH, PaperSize.A4_HEIGHT);
         writer.setFont(StandardFonts.SUBTYPE, StandardFonts.TIMES_BOLD, StandardFonts.WIN_ANSI_ENCODING);
 
+        //Paper Setting
         int topMargin = 25;
         int bottomMargin = 25;
         int leftMargin = 25;
         int rightMargin = 25;
 
+        //Car information
+        String ID = "na";
+        String name = "na";
+        String suffix = "na";
+        String chassis = "na";
+        String spec = "na";
+        String imgPath = "na";
+
+        //Error
+        ArrayList<String> errors = new ArrayList<>();
+
+        //Report detail
+        int reportNo;
+        int pageNo;
+
         //Header
         drawColumn(writer,2, leftMargin,PaperSize.A4_HEIGHT - topMargin - 60,400,30);
+        writer.setFont(StandardFonts.SUBTYPE, StandardFonts.TIMES_BOLD, StandardFonts.WIN_ANSI_ENCODING);
+        writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - topMargin - 22, 20, "Inspection Report");
+        writer.addText(leftMargin + 5,PaperSize.A4_HEIGHT - topMargin - 52, 20, "Date : ");
         drawColumn(writer, 2, leftMargin+400, PaperSize.A4_HEIGHT -topMargin - 60, 145, 30);
+        writer.addText(leftMargin + 405, PaperSize.A4_HEIGHT - topMargin - 22, 20, "Report No");
+        writer.addText( leftMargin + 405, PaperSize.A4_HEIGHT - topMargin - 52, 20, "Page");
+        writer.addText( leftMargin + 405 + 60, PaperSize.A4_HEIGHT - topMargin - 52, 15, "1 out of 1");
+
         //Header END
 
         //General Information
         writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - 132, 20, "General Information");
         writer.addText(385, PaperSize.A4_HEIGHT -132, 20, "Product");
         writer.addLine(leftMargin, PaperSize.A4_HEIGHT - 135, PaperSize.A4_WIDTH-rightMargin, PaperSize.A4_HEIGHT - 135);
+
+        //Label
         drawColumn(writer, 5, leftMargin, PaperSize.A4_HEIGHT -305, 200, 30 );
+        writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - 177, 20 ,"ID" );
+        writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - 207, 20 ,"Name" );
+        writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - 237, 20 ,"Suffix" );
+        writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - 267, 20 ,"Chassis" );
+        writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - 297, 20 ,"N/A" );
+
+        //TODO car information enter here
         drawColumn(writer, 5, leftMargin + 200, PaperSize.A4_HEIGHT - 305, 145, 30);
+        writer.setFont(StandardFonts.SUBTYPE, StandardFonts.COURIER, StandardFonts.WIN_ANSI_ENCODING);
+        writer.addText(leftMargin + 5 + 200, PaperSize.A4_HEIGHT - 177, 18 ,ID );
+        writer.addText(leftMargin + 5 + 200, PaperSize.A4_HEIGHT - 207, 18 ,name );
+        writer.addText(leftMargin + 5 + 200, PaperSize.A4_HEIGHT - 237, 18 ,suffix );
+        writer.addText(leftMargin + 5 + 200, PaperSize.A4_HEIGHT - 267, 18 ,chassis );
+        writer.addText(leftMargin + 5 + 200, PaperSize.A4_HEIGHT - 297, 18 ,"N/A" );
 
 
         //Image of car
+        drawCell(writer, 390, PaperSize.A4_HEIGHT - 305, 150,150);
 //        AssetManager assetManager = getAssets();
 ////        Bitmap car = null;
 //        String imageName = "";
@@ -108,22 +148,23 @@ public class MainActivity extends AppCompatActivity {
         //END of Image
 
         //List of error
-        writer.addText(30, PaperSize.A4_HEIGHT - 367, 20 , "List of errors:");
-        writer.addLine(25, PaperSize.A4_HEIGHT - 370, PaperSize.A4_WIDTH - rightMargin, PaperSize.A4_HEIGHT - 370);
+        writer.addText(30, PaperSize.A4_HEIGHT - 352, 20 , "List of errors:");
+        writer.addLine(25, PaperSize.A4_HEIGHT - 355, PaperSize.A4_WIDTH - rightMargin, PaperSize.A4_HEIGHT - 355);
+
+        errors.add("abc");
+        errors.add("abc");
+        if(errors.size()>0) {
+            int textAlignment = 380;
+            for (int i = 0; i < errors.size(); i++) {
+                writer.addText(leftMargin + 5, PaperSize.A4_HEIGHT - textAlignment, 15,  String.format("%d. %s",i+1,errors.get(i)));
+                textAlignment+=30;
+            }
+        }else{
+            //Do nothing i guess
+        }
+
         //Loop start here to print the errors
         //END loop
-
-//        Bitmap diagram = null;
-//        try {
-//            diagram = BitmapFactory.decodeStream(assetManager.open("diagram.png"));
-//            int left = 0;
-//            int bottom = 302;
-//            writer.addImage(left, bottom ,diagram);
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         outputToFile("test.pdf",writer.asString(),"ISO-8859-1");
     }
